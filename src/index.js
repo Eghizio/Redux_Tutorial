@@ -2,21 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
-
-import { createStore, combineReducers } from "redux";
-
-ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
-
 
 //Redux
-//import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import logger from "redux-logger";
+import { Provider } from "react-redux";
 
+//Reducers
 const mathReducer = (state = 
     {
         result: 1,
@@ -66,12 +58,21 @@ const userReducer = (state =
     return state;
 };
 
-const store = createStore(combineReducers({mathReducer, userReducer}));
+//Redux expected pattern
+// const myLogger = (store) => (next) => (action) => {
+//     console.log("Logged Action: ", action);
+//     next(action);
+// };
 
+const store = createStore(combineReducers( {mathReducer, userReducer} ), 
+                            {}, applyMiddleware( logger ) );
+
+//Debug and feedback
 store.subscribe(() => {
-    console.log("Store updated!", store.getState());
+    // console.log("Store updated!", store.getState());
 });
 
+//Change state
 store.dispatch({
     type: "ADD",
     payload: 44
@@ -92,3 +93,6 @@ store.dispatch({
     payload: 22
 });
 
+
+//Render App
+ReactDOM.render(<Provider store={store} ><App /></Provider>, document.getElementById('root'));
