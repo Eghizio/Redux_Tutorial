@@ -1,7 +1,20 @@
 export function setName(name){
+    // return dispatch => {
+    //     //async simulation, prolly a promise
+    //     setTimeout(() => {
+    //         dispatch({
+    //             type: "SET_NAME",
+    //             payload: name
+    //         });
+    //     }, 2000);
+    // }
     return {
         type: "SET_NAME",
-        payload: name
+        payload: new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(name);
+            }, 2000);
+        })
     };
 }
 

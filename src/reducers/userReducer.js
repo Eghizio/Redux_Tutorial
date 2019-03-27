@@ -4,7 +4,7 @@ const userReducer = (state =
         age: 21
     }, action) => {
     switch(action.type){
-        case "SET_NAME":
+        case "SET_NAME_FULFILLED":
         state = {
             ...state,
             name: action.payload
